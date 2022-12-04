@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demoapi
+spec:
+  selector:
+    matchLabels:
+      app: demoapi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demoapi
+    spec:
+      containers:
+        - name: demoapi
+          image: {Your_repository_in_docker_registry}/demoapi-docker:latest
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demoapi
+spec:
+  type: LoadBalancer
+  selector:
+    app: demoapi
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
